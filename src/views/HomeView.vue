@@ -1,6 +1,6 @@
 <template>
   <TheNavBar />
-  <TrabalhoTable style="margin: 10px" />
+  <TrabalhoTable style="margin: 10px; width: 50%; min-width: 495px" />
 </template>
 
 <script>

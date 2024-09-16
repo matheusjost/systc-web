@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-bordered table-hover table-striped" style="width: 50%; min-width: 495px">
+    <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
             <th scope="col">#</th>
