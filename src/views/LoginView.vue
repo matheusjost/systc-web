@@ -38,13 +38,18 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await apiClient.post('/login', {
-          username: this.username,
-          password: this.password,
+        const response = await apiClient.post('/auth/', {
+          login: this.username,
+          senha: this.password,
         });
+        if (response.status == 401)
+          throw "";
+
         const token = response.data.token;
+        const role = response.data.role;
         localStorage.setItem('authToken', token);
-        this.$router.push('/dashboard');
+        localStorage.setItem('role', role);
+        this.$router.push('/');
       } catch (err) {
         this.error = 'Login failed. Please try again.';
       }

@@ -1,97 +1,69 @@
 <template>
-    <nav class="navbar">
-      <div class="menu-icon" @click="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
+    <nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SYSTC</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">SYSTC</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <h1>SYSTC</h1>
-      <div class="nav-links">
-          <a href="#">Home</a>
-          <a href="#">Sobre</a>
-          <a href="#">Serviços</a>
-          <a href="#">Contato</a>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-success" type="submit">Search</button>
+        </form>
       </div>
-    </nav>
+    </div>
+  </div>
+</nav>
 </template>
 
 <script>
+import apiClient from '@/rest/index.js';
+
 export default {
     name: "TheNavbar",
+    data() {
+        return {
+            menu: null
+        }
+    },
     methods: {
-      toggleMenu() {
-        document.querySelector('.navbar').classList.toggle('active');
-      }
+      async getMenu() {
+        try { 
+            const response = await apiClient.get('/menu');
+            this.menu = response.data;
+        } catch(err) {
+            return
+        }
+    }
     }
 };
 </script>
 <style>
-
-.navbar {
-    background-color: #999999;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1000;
-}
-
-.navbar h1 {
-    font-size: 24px;
-    margin-right: 10px;
-}
-
-.menu-icon {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 25px;
-    margin-left: 10px;
-}
-
-.menu-icon div {
-    height: 4px;
-    background-color: white;
-    border-radius: 2px;
-    width: 32px;
-}
-
-.nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    width: 20%;
-    height: 95vh;
-    background-color: #333333;
-    padding: 10px 0;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav-links a:hover {
-    background-color: #444444;
-}
-
-/* Exibir o menu quando ativo */
-.navbar.active .nav-links {
-    display: flex;
-}
-
-.navbar.active {
-    transform: translateX(0); /* Faz a navbar aparecer ao ser ativada */
-}
 
 </style>

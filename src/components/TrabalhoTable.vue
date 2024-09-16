@@ -1,0 +1,63 @@
+<template>
+    <table class="table table-bordered table-hover table-striped" style="width: 50%; min-width: 495px">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+            </tr>
+        </tbody>
+</table>
+</template>
+
+<script>
+import apiClient from '@/rest/index.js';
+
+export default {
+    name: 'TrabalhoTable',
+    data() {
+        return {
+            listTC: null
+        }
+    },
+    methods: {
+        async getListTC() {
+            try { 
+                const response = await apiClient.get('/trabalho');
+                console.log(response);
+                this.listTC = response.data;
+            } catch(err) {
+                console.log(err);
+                return
+            }
+        },
+    },
+    created() {
+        this.getListTC();
+    }
+}
+</script>
+
+<style>
+    
+</style>
