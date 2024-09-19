@@ -38,14 +38,14 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await apiClient.post('/auth/', {
+        const response = await apiClient.post('/auth', {
           login: this.username,
           senha: this.password,
         });
         if (response.status == 401)
           throw "";
 
-        const token = response.data.token;
+        const token = response.data.data.token;
         const role = response.data.role;
         localStorage.setItem('authToken', token);
         localStorage.setItem('role', role);
@@ -61,8 +61,7 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
 .login-wrapper {
     width: 100vw;
     height: 100vh;

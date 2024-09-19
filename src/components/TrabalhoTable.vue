@@ -2,29 +2,28 @@
     <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+                <th scope="col">ID</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Resumo</th>
+                <th scope="col">Aluno</th>
+                <th scope="col">Orientador</th>
+                <th scope="col">Banca 1</th>
+                <th scope="col">Banca 2</th>
+                <th scope="col">Status</th>
+                <th v-show="editar" scope="col"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-for="tc in listTC" :key="tc.id">
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <th scope="row">{{ tc.id }}</th>
+                <td>{{ tc.titulo }}</td>
+                <td>{{ tc.resumo }}</td>
+                <td>{{ tc.aluno }}</td>
+                <td>{{ tc.orientador }}</td>
+                <td>{{ tc.banca1 }}</td>
+                <td>{{ tc.banca2 }}</td>
+                <td>{{ tc.statusTrabalho }}</td>
+                <td v-show="editar"><button @click="edit(tc.id)"><i class="fa-solid fa-pen-to-square"></i></button></td>
             </tr>
         </tbody>
 </table>
@@ -35,6 +34,12 @@ import apiClient from '@/rest/index.js';
 
 export default {
     name: 'TrabalhoTable',
+    props: {
+        editar: {
+            type: Boolean,
+            required: true,
+        }
+    },
     data() {
         return {
             listTC: null
@@ -44,13 +49,15 @@ export default {
         async getListTC() {
             try { 
                 const response = await apiClient.get('/trabalho');
-                console.log(response);
-                this.listTC = response.data;
+                this.listTC = response.data.data;
             } catch(err) {
                 console.log(err);
                 return
             }
         },
+        edit(id) {
+            this.$router.push('/trabalho/'+id);
+        }
     },
     created() {
         this.getListTC();

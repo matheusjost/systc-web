@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-dark bg-dark">
+  <nav v-if="!isLoginPage" class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">SYSTC</a>
+      <router-link class="navbar-brand" to="/">SYSTC</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -22,7 +22,7 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Definir cronograma de entregas</a>
+              <router-link class="nav-link" to="/entregas">Definir cronograma de entregas</router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Definir banca</a>
@@ -31,7 +31,7 @@
               <a class="nav-link" href="#">Avaliar trabalho</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Criar reunião</a>
+              <a class="nav-link" href="#">Registrar reunião</a>
             </li>
           </ul>
         </div>
@@ -47,18 +47,28 @@ export default {
     name: "TheNavbar",
     data() {
         return {
-            menu: null
+            menu: null,
+            isVisible: true,
         }
+    },
+    computed: {
+      isLoginPage() {
+        const isLoginPage = this.$route.name == 'login';
+        if (!isLoginPage)
+          this.getMenu();
+
+        return isLoginPage;
+      }
     },
     methods: {
       async getMenu() {
         try { 
-            const response = await apiClient.get('/menu');
+            const response = await apiClient.get('/usuario/menu');
             this.menu = response.data;
         } catch(err) {
             return
         }
-    }
+      }
     }
 };
 </script>
