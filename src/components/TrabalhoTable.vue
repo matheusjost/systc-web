@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-bordered table-hover table-striped">
+    <table class="table table-bordered table-hover table-striped m-2">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -10,7 +10,8 @@
                 <th scope="col">Banca 1</th>
                 <th scope="col">Banca 2</th>
                 <th scope="col">Status</th>
-                <th v-show="editar" scope="col"></th>
+                <th v-show="editar" scope="col">Editar</th>
+                <th v-show="avaliar" scope="col">Avaliar</th>
             </tr>
         </thead>
         <tbody v-for="tc in listTC" :key="tc.id">
@@ -24,6 +25,7 @@
                 <td>{{ tc.banca2 }}</td>
                 <td>{{ tc.statusTrabalho }}</td>
                 <td v-show="editar"><button @click="edit(tc.id)"><i class="fa-solid fa-pen-to-square"></i></button></td>
+                <td v-show="avaliar"><button @click="evaluate(tc.id)"><i class="fa-solid fa-pencil"></i></button></td>
             </tr>
         </tbody>
 </table>
@@ -37,7 +39,9 @@ export default {
     props: {
         editar: {
             type: Boolean,
-            required: true,
+        },
+        avaliar: {
+            type: Boolean,
         }
     },
     data() {
@@ -57,6 +61,9 @@ export default {
         },
         edit(id) {
             this.$router.push('/trabalho/'+id);
+        },
+        evaluate(id) {
+            this.$router.push('/avaliacao/'+id);
         }
     },
     created() {

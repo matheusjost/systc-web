@@ -1,14 +1,5 @@
 <template>
-    <div>
-        <form class="form">
-            <div class="mb-3">
-                <label for="dateField" class="form-label">Selecione uma data</label>
-                <input type="date" class="form-control date-input" id="dateField">
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-        <TrabalhoTable />
-    </div>
+    <TrabalhoTable :editar="true"/>
 </template>
 
 <script>

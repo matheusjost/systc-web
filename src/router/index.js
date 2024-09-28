@@ -3,6 +3,8 @@ import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import EntregasView from '@/views/EntregasView.vue';
 import TrabalhoView from '@/views/TrabalhoView.vue';
+import AvaliacaoView from '@/views/AvaliacaoView.vue';
+import AvaliacaoDetailView from '@/views/AvaliacaoDetailView.vue';
 
 const routes = [
   {
@@ -24,7 +26,17 @@ const routes = [
     path: '/trabalho/:id',
     name: 'trabalho',
     component: TrabalhoView, 
-  }
+  },
+  {
+    path: '/avaliacao',
+    name: 'avaliacao',
+    component: AvaliacaoView, 
+  },
+  {
+    path: '/avaliacao/:id',
+    name: 'avaliacaodetail',
+    component: AvaliacaoDetailView, 
+  },
 ]
 
 const router = createRouter({

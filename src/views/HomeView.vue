@@ -1,5 +1,5 @@
 <template>
-  <TrabalhoTable :editar="false" style="margin: 10px; width: 60%; min-width: 495px" />
+  <TrabalhoTable :editar="false" style="width: 60%; min-width: 495px" />
 </template>
 
 <script>

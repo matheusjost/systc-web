@@ -46,16 +46,13 @@ export default {
           throw "";
 
         const token = response.data.data.token;
-        const role = response.data.role;
+        const role = response.data.data.role;
         localStorage.setItem('authToken', token);
         localStorage.setItem('role', role);
         this.$router.push('/');
       } catch (err) {
         this.error = 'Login failed. Please try again.';
       }
-    },
-    created() {
-      this.error = 'erro'
     }
   },
 };

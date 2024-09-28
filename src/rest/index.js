@@ -16,9 +16,8 @@ apiClient.interceptors.request.use(
   config => {
     if (config.url !== '/auth') {
       const token = getToken();
-      if (token) {
+      if (token)
         config.headers.Authorization = `Bearer ${token}`;
-      }
     }
     return config;
   },

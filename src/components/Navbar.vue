@@ -22,13 +22,16 @@
               </ul>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/entregas">Definir cronograma de entregas</router-link>
+              <router-link v-show="hasPermission()" class="nav-link" to="/">Cadastrar usuário</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Definir banca</a>
+              <router-link v-show="hasPermission('CADASTRAR')" class="nav-link" to="/">Cadastrar trabalho</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Avaliar trabalho</a>
+              <router-link v-show="hasPermission()" class="nav-link" to="/entregas">Editar trabalho</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link v-show="hasPermission('AVALIAR')" class="nav-link" to="/avaliacao">Avaliar trabalho</router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Registrar reunião</a>
@@ -48,7 +51,6 @@ export default {
     data() {
         return {
             menu: null,
-            isVisible: true,
         }
     },
     computed: {
@@ -68,6 +70,19 @@ export default {
         } catch(err) {
             return
         }
+      },
+      hasPermission(item) {
+        var role = localStorage.getItem('role');
+        if (role === 'COORDENADOR')
+          return true;
+
+        if (item === 'AVALIAR' && role === 'PROFESSOR')
+          return true;
+
+        if (item === 'CADASTRAR' && role === 'ALUNO')
+          return true;
+
+        return false;
       }
     }
 };

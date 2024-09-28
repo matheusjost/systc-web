@@ -1,62 +1,83 @@
 <template>
     <div class="m-2 form-container">
-        <form>
+        <form @submit.prevent="enviar">
+            <div class="mb-3 text-end">
+              <button type="submit" class="btn btn-success">Gravar</button>
+            </div>
             <div class="mb-3 row">
               <label for="idField" class="col-sm-1 col-form-label">ID:</label>
-              <div class="col-sm-10">
-                <input type="text" id="idField" class="form-control" :value="idTrabalho" disabled>
+              <div class="col-sm-11">
+                <input type="text" id="idField" class="form-control" :value="trabalho.id" disabled>
               </div>
             </div>
             <div class="mb-3 row">
               <label for="tituloField" class="col-sm-1 col-form-label">Título:</label>
-              <div class="col-sm-10">
-                <input type="text" id="tituloField" class="form-control" :value="trabalho.titulo" disabled>
+              <div class="col-sm-11">
+                <input type="text" id="tituloField" class="form-control" :value="this.trabalho.titulo" disabled>
               </div>
             </div>
             <div class="mb-3 row">
               <label for="resumoField" class="col-sm-1 col-form-label">Resumo:</label>
-              <div class="col-sm-10">
+              <div class="col-sm-11">
                 <input type="text" id="resumoField" class="form-control" :value="trabalho.resumo" disabled>
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="idAlunoField" class="col-sm-1 col-form-label">Aluno:</label>
-              <div class="col-sm-10 d-flex gap-2">
-                <input type="text" id="idAlunoField" class="form-control" :value="trabalho.idaluno" style="width: 100px" disabled>
-                <input type="text" id="nomeAlunoField" class="form-control" :value="trabalho.nomealuno" disabled>
+              <label for="alunoField" class="col-sm-1 col-form-label">Aluno:</label>
+              <div class="col-sm-11 d-flex gap-2">
+                <select v-model="trabalho.aluno" id="alunoField" class="form-select" aria-label="Aluno" disabled>
+                  <option v-for="a in alunos" :key="a.id" :value="a.id">{{ a.nome }}</option>
+                </select>
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="idOrientadorField" class="col-sm-1 col-form-label">Orientador:</label>
-              <div class="col-sm-10 d-flex gap-2">
-                <input type="text" id="idOrientadorField" class="form-control" :value="trabalho.idorientador" style="width: 100px" disabled>
-                <input type="text" id="nomeOrientadorField" class="form-control" :value="trabalho.nomeorientador" disabled>
+              <label for="orientadorField" class="col-sm-1 col-form-label">Orientador:</label>
+              <div class="col-sm-11 d-flex gap-2">
+                <select v-model="trabalho.orientador" id="orientadorField" class="form-select" aria-label="Banca 1" disabled>
+                  <option v-for="p in professores" :key="p.id" :value="p.id">{{ p.nome }}</option>
+                </select>
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="idBanca1Field" class="col-sm-1 col-form-label">Banca 1:</label>
-              <div class="col-sm-10 d-flex gap-2">
-                <input type="text" id="idBanca1Field" class="form-control" :value="trabalho.idbanca1" style="width: 100px" disabled>
-                <input type="text" id="nomeBanca1Field" class="form-control" :value="trabalho.nomebanca1" disabled>
+              <label for="banca1Field" class="col-sm-1 col-form-label">Banca 1:</label>
+              <div class="col-sm-11 d-flex gap-2">
+                <select v-model="trabalho.banca1" id="banca1Field" class="form-select" aria-label="Banca 1">
+                  <option v-for="p in professores" :key="p.id" :value="p.id">{{ p.nome }}</option>
+                </select>
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="idBanca2Field" class="col-sm-1 col-form-label">Banca 2:</label>
-              <div class="col-sm-10 d-flex gap-2">
-                <input type="text" id="idBanca2Field" class="form-control" :value="trabalho.idbanca2" style="width: 100px" disabled>
-                <input type="text" id="nomeBanca2Field" class="form-control" :value="trabalho.nomebanca2" disabled>
+              <label for="banca2Field" class="col-sm-1 col-form-label">Banca 2:</label>
+              <div class="col-sm-11 d-flex gap-2">
+                <select v-model="trabalho.banca2" id="banca2Field" class="form-select" aria-label="Banca 2">
+                  <option v-for="p in this.professores" :key="p.id" :value="p.id">{{ p.nome }}</option>
+                </select>
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="idStatusField" class="col-sm-1 col-form-label">Status:</label>
-              <div class="col-sm-10 d-flex gap-2">
-                <input type="text" id="idStatusField" class="form-control" :value="trabalho.idstatus" style="width: 100px" disabled>
-                <input type="text" id="nomeStatusField" class="form-control" :value="trabalho.nomestatus" disabled>
+              <label for="statusField" class="col-sm-1 col-form-label">Status:</label>
+              <div class="col-sm-11 d-flex gap-2">
+                <select v-model="trabalho.statusTrabalho" id="statusField" class="form-select" aria-label="Status" disabled>
+                  <option v-for="s in status" :key="s.id" :value="s.id">{{ s.descricao }}</option>
+                </select>
               </div>
             </div>
-            <div class="text-end">
-              <button type="submit" class="btn btn-primary">Enviar</button>
-            </div>
+            <table class="table table-bordered table-hover table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo de entrega</th>
+                      <th scope="col">Prazo de entrega</th>
+                      <th scope="col">Prazo de avaliação</th>
+                  </tr>
+              </thead>
+              <tbody v-for="e in entrega" :key="e.id">
+                  <tr>
+                      <th scope="row">{{ e.tipoEntrega.descricao }}</th>
+                      <td scope="row"><input type="" id="prazoEntregaField" class="form-control" v-model="e.prazoEntrega"></td>
+                      <td scope="row"><input type="datetime" id="prazoNotaField" class="form-control" v-model="e.prazoNota"></td>
+                  </tr>
+              </tbody>
+            </table>
         </form>
     </div>
 </template>
@@ -68,23 +89,74 @@ export default {
   name: 'TrabalhoView',
   data() {
     return {
-      idTrabalho: null,
-      trabalho: null,
+      trabalho: {
+        id: '',
+        titulo: '',
+        resumo: '',
+        aluno: '',
+        orientador: '',
+        banca1: '',
+        banca2: '',
+        statusTrabalho: ''
+      },
+      entrega: [],
+      selecionado: '',
+      professores: [],
+      alunos: [],
+      status: []
     }
   },
   methods: {
     async getTrabalho() {
       try { 
-          const response = await apiClient.get('/trabalho/'+this.idTrabalho);
+          const response = await apiClient.get('/trabalho/'+this.$route.params.id);
           this.trabalho = response.data.data;
+      } catch(err) {
+          console.log(err);
+          return
+      }
+    },
+    async getEntregas() {
+      try { 
+          const response = await apiClient.get('/trabalho/'+this.$route.params.id+'/entregas');
+          this.entrega = response.data.data;
+      } catch(err) {
+          console.log(err);
+          return
+      }
+    },
+    canEditBanca() {
+      return localStorage.getItem('role') == 'COORDENADOR'
+    },
+    enviar() {
+      console.log(this.trabalho);
+    },
+    async getUsuarios() {
+      try { 
+          const response = await apiClient.get('/usuario');
+          const data = response.data.data;
+          this.alunos = data.filter(user => user.role === 'ALUNO');
+          this.professores = data.filter(user => user.role != 'ALUNO');
+      } catch(err) {
+          console.log(err);
+          return
+      }  
+    },
+    async getStatus() {
+      try { 
+          const response = await apiClient.get('/status');
+          this.status = response.data.data;
       } catch(err) {
           console.log(err);
           return
       }
     }
   },
-  mounted() {
-    this.idTrabalho = this.$route.params.id;
+  created() {
+    this.getTrabalho();
+    this.getEntregas();
+    this.getUsuarios();
+    this.getStatus();
   }
 }
 </script>
