@@ -1,14 +1,14 @@
 <template>
-  <TrabalhoTable :editar="false" style="width: 60%; min-width: 495px" />
+  <TrabalhoView />
 </template>
 
 <script>
-import TrabalhoTable from '@/components/TrabalhoTable.vue';
+import TrabalhoView from '@/views/TrabalhoView.vue';
 
 export default {
   name: 'HomeView',
   components: {
-    TrabalhoTable
+    TrabalhoView
   }
 }
 </script>

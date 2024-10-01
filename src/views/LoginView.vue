@@ -49,6 +49,7 @@ export default {
         const role = response.data.data.role;
         localStorage.setItem('authToken', token);
         localStorage.setItem('role', role);
+        localStorage.setItem('login',this.username);
         this.$router.push('/');
       } catch (err) {
         this.error = 'Login failed. Please try again.';

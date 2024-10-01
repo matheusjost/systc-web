@@ -2,6 +2,7 @@
   <nav v-if="!isLoginPage" class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/">SYSTC</router-link>
+      <h1 class="navbar-brand">{{ login }}</h1>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -12,29 +13,11 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Cadastros
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">Cadastrar aluno</a></li>
-                <li><a class="dropdown-item" href="#">Cadastrar professor</a></li>
-              </ul>
+            <li class="nav-item">
+              <router-link v-show="hasPermission()" class="nav-link" to="/usuarios">Usuários</router-link>
             </li>
             <li class="nav-item">
-              <router-link v-show="hasPermission()" class="nav-link" to="/">Cadastrar usuário</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link v-show="hasPermission('CADASTRAR')" class="nav-link" to="/">Cadastrar trabalho</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link v-show="hasPermission()" class="nav-link" to="/entregas">Editar trabalho</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link v-show="hasPermission('AVALIAR')" class="nav-link" to="/avaliacao">Avaliar trabalho</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Registrar reunião</a>
+              <router-link class="nav-link" to="/trabalhos">Trabalhos</router-link>
             </li>
           </ul>
         </div>
@@ -50,7 +33,8 @@ export default {
     name: "TheNavbar",
     data() {
         return {
-            menu: null,
+            menu: {},
+            login: '',
         }
     },
     computed: {
@@ -63,27 +47,34 @@ export default {
       }
     },
     methods: {
-      async getMenu() {
-        try { 
-            const response = await apiClient.get('/usuario/menu');
-            this.menu = response.data;
-        } catch(err) {
-            return
+        async getMenu() {
+            try { 
+                const response = await apiClient.get('/usuario/menu');
+                this.menu = response.data;
+            } catch(err) {
+                return
+            }
+        },
+        hasPermission(item) {
+            var role = localStorage.getItem('role');
+            if (role === 'COORDENADOR')
+            return true;
+
+            if (item === 'AVALIAR' && role === 'PROFESSOR')
+            return true;
+
+            if (item === 'CADASTRAR' && role === 'ALUNO')
+            return true;
+
+            return false;
+        },
+        setLabelLogin() {
+            this.login = localStorage.getItem('login');
+            this.login = '';
         }
-      },
-      hasPermission(item) {
-        var role = localStorage.getItem('role');
-        if (role === 'COORDENADOR')
-          return true;
-
-        if (item === 'AVALIAR' && role === 'PROFESSOR')
-          return true;
-
-        if (item === 'CADASTRAR' && role === 'ALUNO')
-          return true;
-
-        return false;
-      }
+    },
+    mounted() {
+        this.setLabelLogin();
     }
 };
 </script>
