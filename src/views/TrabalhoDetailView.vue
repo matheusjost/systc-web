@@ -63,7 +63,7 @@
               </div>
             </div>
             <EntregasTable ref="EntregasTable" :editar="editar"/>
-            <NotasTable :editar="editar" v-show="editar"/>
+            <NotasTable ref="NotasTable" :editar="editar" v-show="editar"/>
         </form>
     </div>
 </template>
@@ -117,6 +117,7 @@ export default {
 		},
 		async enviar() {
             let alertstr;
+            console.log(this.$refs.EntregasTable.entrega);
 			if (!this.editar) {
 				await apiClient.post('/trabalho/', {
 					titulo: this.trabalho.titulo,
@@ -129,9 +130,9 @@ export default {
                     entrega: this.$refs.EntregasTable.entrega
 				})
                 this.trabalho = {};
-
                 alertstr = 'Trabalho criado'; 
 			} else {
+                console.log(this.$refs.EntregasTable.entrega);
 				await apiClient.put('/trabalho/' + this.trabalho.id + '/', {
 					id: this.trabalho.id,
 					titulo: this.trabalho.titulo,
@@ -148,7 +149,7 @@ export default {
 			}
 
             alert(alertstr);
-            this.refresh();
+            this.$router.push('/trabalhos');
 		},
 		async getUsuarios() {
 			try { 

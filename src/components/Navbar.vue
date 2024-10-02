@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import apiClient from '@/rest/index.js';
-
 export default {
     name: "TheNavbar",
     data() {
@@ -40,21 +38,11 @@ export default {
     computed: {
       isLoginPage() {
         const isLoginPage = this.$route.name == 'login';
-        if (!isLoginPage)
-          this.getMenu();
 
         return isLoginPage;
       }
     },
     methods: {
-        async getMenu() {
-            try { 
-                const response = await apiClient.get('/usuario/menu');
-                this.menu = response.data;
-            } catch(err) {
-                return
-            }
-        },
         hasPermission(item) {
             var role = localStorage.getItem('role');
             if (role === 'COORDENADOR')

@@ -65,6 +65,7 @@ export default {
     },
     methods: {
         async gravar() {
+            var alertstr;
             if (!this.editar) {
                 await apiClient.post('/auth/register',
                     {
@@ -75,7 +76,7 @@ export default {
                         role: this.usuario.role,
                     }
                 );
-                this.usuario = {};
+                alertstr = 'Usuário criado';
             } else {
                 await apiClient.put('/auth/register/' + this.usuario.id,
                     {
@@ -85,8 +86,11 @@ export default {
                         email: this.usuario.email,
                         role: this.usuario.role,
                     }
-                );   
+                );
+                alertstr = 'Usuário editado';   
             }
+            alert(alertstr);
+            this.$router.push('/usuarios');
         },
         async getRoles() {
             try { 
@@ -105,13 +109,16 @@ export default {
                 console.log(err);
                 return
             }
+        },
+        refresh() {
+            this.getRoles();
+            if (this.editar) {
+                this.getUsuario();
+            }
         }
     },
     mounted() {
-        this.getRoles();
-        if (this.editar) {
-            this.getUsuario();
-        }
+        this.refresh();   
     }
 }
 

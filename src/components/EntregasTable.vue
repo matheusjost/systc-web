@@ -9,7 +9,7 @@
         </thead>
         <tbody v-for="e in entrega" :key="e.id">
             <tr>
-                <th scope="row">{{ e.tipoEntrega.descricao }}</th>
+                <th scope="row">{{ getDescricaoTipo(e.idTipoEntrega) }}</th>
                 <td scope="row"><input type="date" id="prazoEntregaField" class="form-control" v-model="e.prazoEntrega" :max="e.prazoNota" :disabled="!canEdit()"></td>
                 <td scope="row"><input type="date" id="prazoNotaField" class="form-control" v-model="e.prazoNota" :min="e.prazoEntrega" :disabled="!canEdit()"></td>
             </tr>
@@ -25,6 +25,7 @@ export default {
     data() {
       return {
         entrega: [],
+        tipos_entrega: [],
       }
     },
     props: {
@@ -49,26 +50,57 @@ export default {
         async getTiposEntrega() {
             try { 
 				const response = await apiClient.get('/tipo-entrega');
-                var data = response.data.data;
+                this.tipos_entrega = response.data.data;
 
-                this.entrega = [];
-                data.forEach((tipoentrega) => {
-                    this.entrega.push({tipoEntrega: tipoentrega})
-                });
+                if (!this.editar) {
+                    this.entrega = [];
+                    this.tipos_entrega.forEach((tpe) => {
+                        this.entrega.push({idTipoEntrega: tpe.id})
+                    })
+                }
 			} catch(err) {
 				console.log(err);
 				return
 			}  
         },
+        async getCriterios() {
+            try { 
+                const response = await apiClient.get('/criterio');
+                var criterios = response.data.data;
+                var criterio_entrega = {criterio: criterios.id};
+
+                criterio_entrega = [];
+                criterios.forEach((c) => {
+                    criterio_entrega.push({criterio: c.id});
+                });
+
+                this.entrega.forEach((e) => {
+                    e.nota = criterio_entrega;
+                });
+			} catch(err) {
+				console.log(err);
+				return
+			}
+        },
         refresh() {
+            this.getTiposEntrega();
             if (this.editar)
                 this.getEntregas();
-            else {
-                this.getTiposEntrega();
-            }
+
+            this.getCriterios();
+        },
+        getDescricaoTipo(id) {
+            if (id == undefined)
+                return '';
+
+            var entrega_aux = this.tipos_entrega.find(e => e.id === id);   
+            if (entrega_aux == undefined)
+                return '';
+            
+            return entrega_aux.descricao;
         }
     },
-    mounted() {
+    created() {
         this.refresh();
     }
 }
