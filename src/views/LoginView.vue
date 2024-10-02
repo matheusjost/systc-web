@@ -47,8 +47,10 @@ export default {
 
         const token = response.data.data.token;
         const role = response.data.data.role;
+        const id = response.data.data.id;
         localStorage.setItem('authToken', token);
         localStorage.setItem('role', role);
+        localStorage.setItem('id', id);
         localStorage.setItem('login',this.username);
         this.$router.push('/');
       } catch (err) {

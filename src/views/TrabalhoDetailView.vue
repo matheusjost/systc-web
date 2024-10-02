@@ -147,6 +147,7 @@ export default {
 
                 alertstr = 'Trabalho editado';
 			}
+            console.log(this.$refs.EntregasTable.entrega);
 
             alert(alertstr);
             this.$router.push('/trabalhos');
